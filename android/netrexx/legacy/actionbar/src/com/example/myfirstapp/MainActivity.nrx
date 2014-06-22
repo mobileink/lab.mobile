@@ -2,13 +2,13 @@
 package com.example.myfirstapp;
 
 import android.app.Activity
--- import android.support.v7.app.ActionBarActivity
+import android.support.v7.app.ActionBarActivity
 import android.os.Bundle
 import android.content.Intent
 import android.widget.EditText
 import android.view.View
 
-class MainActivity extends Activity -- ActionBarActivity
+class MainActivity extends ActionBarActivity
   Properties public constant
     EXTRA_MESSAGE = String "com.example.myfirstapp.MESSAGE";
     /** Called when the activity is first created. */
@@ -16,12 +16,6 @@ class MainActivity extends Activity -- ActionBarActivity
   method onCreate(savedInstanceState=Bundle) public
     super.onCreate(savedInstanceState)
     setContentView(int R.layout.main)
-    -- public void onCreate(Bundle savedInstanceState)
-    -- {
-    --     super.onCreate(savedInstanceState);
-    --     setContentView(R.layout.main);
-    -- }
-
 
     /** Called when the user clicks the Send button */
   method sendMessage(view=View) public
@@ -30,11 +24,3 @@ class MainActivity extends Activity -- ActionBarActivity
     message = myeditText.getText().toString()
     myintent.putExtra(EXTRA_MESSAGE, message)
     startActivity(myintent)
-    -- public void sendMessage(View view) {
-    -- 	Intent intent = new Intent(this, DisplayMessageActivity.class);
-    -- 	EditText editText = (EditText) findViewById(R.id.edit_message);
-    -- 	String message = editText.getText().toString();
-    -- 	intent.putExtra(EXTRA_MESSAGE, message);
-    -- 	startActivity(intent);
-    -- }
-
