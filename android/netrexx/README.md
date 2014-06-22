@@ -24,7 +24,6 @@ $ nrc -nocompile -keepasjava -replace src/com/example/myfirstapp/*nrx
 $ ant debug
 
 $ adb install -r bin/MyFirstApp-debug.apk
-
 ```
 
 The [bin](bin) directory contains the shell scripts that make this work.

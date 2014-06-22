@@ -7,7 +7,7 @@ support action bars for SDK prior to 11 back to 7.
 This requires two components:
 
 * the [actionbar](actionbar) application, which uses
-* the [appcompat_v7](appcompat_v7) library, which packages the support libs from the Android SDK as dalvik code
+* the [appcompat_v7](appcompat_v7) library, which packages the support libs from the Android SDK as [dalvik](http://source.android.com/devices/tech/dalvik/) code
 
 In the application (actionbar project) `AndroidManifest.xml` sets
 
