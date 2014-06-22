@@ -15,3 +15,17 @@ In the source code, `Activity` implementations extend
 does.
 
 The compatibility support libs `android-support-v4.jar` and ... are not needed.
+
+```
+$ ant clean
+
+$ ant code-gen      ## code-gen is cribbed from the sdk build.xml
+
+$ javac -d bin/classes gen/com/example/myfirstapp/R.java
+
+$ nrc -nocompile -keepasjava -replace src/com/example/myfirstapp/*nrx
+
+$ ant debug
+
+$ adb install -r bin/MyFirstApp-debug.apk
+```
