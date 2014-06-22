@@ -4,6 +4,11 @@ Legacy ActionBar Example - Android 2.1 and above (SDK 7 and over)
 This example demonstrates use of the compatibility libraries to
 support action bars for SDK prior to 11 back to 7.
 
+This requires two components:
+
+* the [actionbar](actionbar) application, which uses
+* the [appcompat_v7](appcompat_v7) library, which packages the support libs from the Android SDK as dalvik code
+
 In the application (actionbar project) `AndroidManifest.xml` sets
 
 * sets minSdkVersion to 7: `<uses-sdk android:minSdkVersion="7"...`
