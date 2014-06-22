@@ -31,11 +31,12 @@ $ adb install -r bin/MyFirstApp-debug.apk
 
 ### Basic examples
 
-* legacy
-* actionbar
+* [legacy](legacy)
+* [actionbar](actionbar)
 
 These examples use netrexx to implement the code from the Android
 tutorials
+
 [Building Your First App](http://developer.android.com/training/basics/firstapp/index.html)
 and
 [Adding the Action Bar](http://developer.android.com/training/basics/actionbar/index.html).
