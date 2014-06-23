@@ -19,13 +19,16 @@ A laboratory for exploring mobile computing
   ocean: it can accommodate the various applications created by
   developers and it provides an interesting new space that offers
   unprecedented enjoyment to its users."  Good luck with that.  Related to Tizen.
+* Sailfish
 * Cross-Platform
   * [Apache Cordova](http://cordova.apache.org/) (aka "PhoneGap") "a
     platform for building native mobile applications using HTML, CSS
     and JavaScript"
-  * [Appcelerator Titanium](http://www.appcelerator.com/titanium/) "
-    An open, extensible development environment for creating beautiful
+  * [Appcelerator Titanium](http://www.appcelerator.com/titanium/) "An
+    open, extensible development environment for creating beautiful
     native apps across different mobile devices and OSs including iOS,
-    Android, and BlackBerry, as well as hybrid and HTML5."
+    Android, and BlackBerry, as well as hybrid and HTML5."  "Create
+    rich native iOS, Android, hybrid, and mobile web apps from a
+    single JavaScript-based SDK."
   * [Corona](http://coronalabs.com/) Fee-based.
   * [Xamarin](https://xamarin.com/) "Create native iOS, Android, Mac, and Windows apps in C#".  Fee-based.
