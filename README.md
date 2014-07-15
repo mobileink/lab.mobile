@@ -32,3 +32,4 @@ A laboratory for exploring mobile computing
     single JavaScript-based SDK."
   * [Corona](http://coronalabs.com/) Fee-based.
   * [Xamarin](https://xamarin.com/) "Create native iOS, Android, Mac, and Windows apps in C#".  Fee-based.
+  * [AWS Mobile SDK](http://aws.amazon.com/mobile/sdk/)  From Amazon
