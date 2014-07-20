@@ -1,7 +1,7 @@
 ### Development Options
 
 * Java is the default env
-* [NetRexx](http://www.netrexx.org/)  Little know, but very people-friendly, easy to learn and use
+* [NetRexx](http://www.netrexx.org/)  Little known, but very people-friendly, easy to learn and use
 * [Processing](http://processing.org/) Must be something to this;
   somebody wrote a whole book about it:
   [Rapid Android Development: Build Rich, Sensor-Based Applications with Processing](http://pragprog.com/book/dsproc/rapid-android-development)

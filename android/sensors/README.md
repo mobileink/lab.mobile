@@ -2,8 +2,8 @@
 
 Development options:
 
-* Raw Android API
-* Third-party sensor APIs:
+* Android Sensor Framework
+* Third-party sensor libs:
   * Emotion Sense
   * Purple Robot
   * [GAST](https://github.com/gast-lib/gast-lib) Great Android Sensing
