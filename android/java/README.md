@@ -42,7 +42,7 @@ id: 1 or "android-19"
 So:
 
 ```
-$ android create project -n myproj -t 1 -p myproj -k com.example.proj -a MainActivity
+$ android create project -n myproj -t 1 -p myproj -k com.example.android -a MainActivity
 ```
 
 Yielding:
@@ -79,4 +79,31 @@ myproj
 	    - MainActivity.java
 ```
 
+### Build
 
+Run `$ ant debug`.  If you follow the generic instructions on the
+Android dev site you should see something like:
+
+```
+$ ant debug
+...
+-build-setup:
+[getbuildtools] Using latest Build Tools: 19.1.0
+     [echo] Resolving Build Target for actionbar...
+[gettarget] Project Target:   Android 4.4.2
+[gettarget] API level:        19
+[gettarget] WARNING: No minSdkVersion value set. Application will install on all Android versions.
+     [echo] ----------
+...
+```
+
+We specified the target ID when we ran `android create project`; why
+are we getting this message?  The answer is that the target specified
+gets recorded in `project.properties` as `target=android-19`.  To set
+the minimum SDK you have to edit AndroidManifest.xml:
+
+```
+  <uses-sdk android:minSdkVersion="11"
+	    android:targetSdkVersion="19"/>
+
+```
