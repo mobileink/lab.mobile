@@ -4,8 +4,9 @@ Development options:
 
 * Android Sensor Framework
 * Third-party sensor libs:
-  * Emotion Sense
-  * Purple Robot
+  * [X-Sense Labs](https://github.com/xsenselabs) - the libraries behind the Emotion Sense application
+  * [Funf Open Sensing Framework](http://www.funf.org/about.html) from Behavio (acquired by Google): "an extensible sensing and data processing framework for mobile devices, supported and maintained by Behavio. The core concept is to provide an open source, reusable set of functionalities, enabling the collection, uploading, and configuration of a wide range of data signals accessible via mobile phones."
+  * [Purple Robot](http://tech.cbits.northwestern.edu/purple-robot/)
   * [GAST](https://github.com/gast-lib/gast-lib) Great Android Sensing
 Toolkit.  Based on code from
 [ Professional Android Sensor Programming](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118183487.html)
