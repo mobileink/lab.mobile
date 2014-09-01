@@ -1,0 +1,11 @@
+/* MainActivity.nrx */
+package org.example.myapp;
+
+import android.app.Activity
+import android.os.Bundle
+
+class MainActivity extends Activity
+  -- @Override
+  method onCreate(savedInstanceState=Bundle) public
+    super.onCreate(savedInstanceState)
+    setContentView(int R.layout.main)
