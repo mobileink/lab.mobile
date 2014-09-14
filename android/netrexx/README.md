@@ -11,7 +11,8 @@ with a new IDE, "Android Studio", based on IntelliJ IDEA.
 The examples here do not use the IDEs.
 
 The Gradle-based build system is a huge improvement over the Ant-based
-system, so we only include a few basic examples using Ant builds.
+system, so we only include a few basic examples using Ant builds.  If
+you are just getting started you should ignore the Ant-based examples.
 
 The trick is to use the netrexx translator to generate java code but
 not compile it.  The build system will treat those files just like any
