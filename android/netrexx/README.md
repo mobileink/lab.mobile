@@ -5,10 +5,53 @@ Examples of using [netrexx](http://www.netrexx.org/) to develop
 android apps.
 
 The trick is to use the netrexx translator to generate java code but
-not compile it.  To make that work, we expose the `-code-gen` task
-found in the Android SDK ant file at
-`$ANDROID_HOME/tools/ant/build.xml` by copying it to our project
-`build.xml` and adding the required dependencies.
+not compile it.  Then the standard build system call compile those
+files.
+
+And of course the NetRexx runtime - NetRexxR.jar, a measly 37K! - is
+required.  The Android ant build scripts will dexify (compile to
+Dalvik) anything in the `libs` directory of the project, so all we
+need to do is copy `NetRexxR.jar` to `libs`.
+
+Originally the Android build system was Ant-based, and the IDE was
+based on Eclipse.  This is changing to a Gradle-based build system
+with a new IDE, "Android Studio", based on IntelliJ IDEA.
+
+The examples here do not use the IDEs.
+
+The Gradle-based build system is a huge improvement over the Ant-based
+system, so we only include a few basic examples using Ant builds.
+
+## Gradle
+
+To integrate NetRexx code, you just need to run a preparatory
+compile (to generate compiled resources), then run the netrexx translator (to generate java files from netrexx source), and then build the whole thing using the standard gradle command.
+
+1.  make sure you have gradle 1.10 installed
+2.  adjust the paths in the files in bin
+3.  $ source bin/android-dev
+4.  cd basic
+5.  $ gradle wrapper
+
+Now compile the resources so the netrexx compile step doesn't complain:
+
+6.  $ ./gradlew compileDebug
+
+Translate netrexx source to java source:
+
+7.  ./nrc src/main/java/org/example/myapp/*nrx
+
+Now build the whole shebang:
+
+8.  ./gradlew assembleDebug
+
+Thereafter, just run $ ./build.sh when you change the netrexx source code.
+
+## Ant
+
+To make this work, we expose the `-code-gen` task found in the
+Android SDK ant file at `$ANDROID_HOME/tools/ant/build.xml` by copying
+it to our project `build.xml` and adding the required dependencies.
 
   In brief:
 
@@ -27,11 +70,6 @@ $ adb install -r bin/MyFirstApp-debug.apk
 ```
 
 The [bin](bin) directory contains the shell scripts that make this work.
-
-And of course the NetRexx runtime - NetRexxR.jar, a measly 37K! - is
-required.  The Android ant build scripts will dexify (compile to
-Dalvik) anything in the `libs` directory of the project, so all we
-need to do is copy `NetRexxR.jar` to `libs`.
 
 ## examples
 
