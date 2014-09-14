@@ -28,10 +28,10 @@ $ adb install -r bin/MyFirstApp-debug.apk
 
 The [bin](bin) directory contains the shell scripts that make this work.
 
-And of course the NetRexx runtime is required.  The Android ant build
-scripts will dexify (compile to Dalvik) anything in the `libs`
-directory of the project, so all we need to do is copy `NetRexxR.jar`
-to `libs`.
+And of course the NetRexx runtime - NetRexxR.jar, a measly 37K! - is
+required.  The Android ant build scripts will dexify (compile to
+Dalvik) anything in the `libs` directory of the project, so all we
+need to do is copy `NetRexxR.jar` to `libs`.
 
 ## examples
 
