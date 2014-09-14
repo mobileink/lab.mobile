@@ -4,15 +4,6 @@ NetRexx Android Development
 Examples of using [netrexx](http://www.netrexx.org/) to develop
 android apps.
 
-The trick is to use the netrexx translator to generate java code but
-not compile it.  Then the standard build system call compile those
-files.
-
-And of course the NetRexx runtime - NetRexxR.jar, a measly 37K! - is
-required.  The Android ant build scripts will dexify (compile to
-Dalvik) anything in the `libs` directory of the project, so all we
-need to do is copy `NetRexxR.jar` to `libs`.
-
 Originally the Android build system was Ant-based, and the IDE was
 based on Eclipse.  This is changing to a Gradle-based build system
 with a new IDE, "Android Studio", based on IntelliJ IDEA.
@@ -21,6 +12,16 @@ The examples here do not use the IDEs.
 
 The Gradle-based build system is a huge improvement over the Ant-based
 system, so we only include a few basic examples using Ant builds.
+
+The trick is to use the netrexx translator to generate java code but
+not compile it.  The build system will treat those files just like any
+other java files; but for our purposes they are intermediate files,
+and thus not under version control.
+
+And of course the NetRexx runtime - NetRexxR.jar, a measly 37K! - is
+required.  The Android build scripts (both Ant- and Gradle-based) will
+dexify (compile to Dalvik) anything in the `libs` directory of the
+project, so all we need to do is copy `NetRexxR.jar` to `libs`.
 
 ## Gradle
 
