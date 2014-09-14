@@ -7,5 +7,6 @@ import android.os.Bundle
 class MainActivity extends Activity
   -- @Override
   method onCreate(savedInstanceState=Bundle) public
+
     super.onCreate(savedInstanceState)
     setContentView(int R.layout.main)

@@ -1,5 +1,0 @@
-ANDROID_HOME=/usr/local/android-sdk-macosx
-
-export PATH=/usr/local/android-sdk-macosx/tools:/usr/local/android-sdk-macosx/platform-tools:$PATH
-
-. ~/.android-cp
