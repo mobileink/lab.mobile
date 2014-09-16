@@ -1,5 +1,5 @@
 .gradle/
 build/
-*.java
+*.log
 *.keep
 *.crossref
