@@ -8,6 +8,14 @@ buildscript {
 }
 apply plugin: 'android'
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/nrx'
+        }
+    }
+}
+
 android {
     compileSdkVersion 19
     buildToolsVersion '20.0.0'
