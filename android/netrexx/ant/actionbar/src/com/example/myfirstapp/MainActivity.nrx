@@ -9,7 +9,7 @@ import android.view.View
 
 class MainActivity extends Activity
   Properties public constant
-    EXTRA_MESSAGE = String "com.example.myfirstapp.MESSAGE";
+    EXTRA_MESSAGE = String "com.example.myfirstapp.MESSAGE"
     /** Called when the activity is first created. */
     -- @Override
   method onCreate(savedInstanceState=Bundle) public
