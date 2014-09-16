@@ -18,7 +18,6 @@ following to `~/.bash_proile`:
 
 ```
 . ~/.android-dev
-. ~/.netrexx
 ```
 
 (assuming you've renamed them as dotfiles).

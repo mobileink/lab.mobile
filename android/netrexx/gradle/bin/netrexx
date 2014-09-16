@@ -1,1 +1,1 @@
-export CLASSPATH="/usr/local/netrexx/lib/NetRexxC.jar:$CLASSPATH"
+export CLASSPATH="/Applications/netrexx/lib/NetRexxC.jar:$CLASSPATH"

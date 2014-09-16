@@ -41,7 +41,9 @@ if test "$1"  = "-run"; then
   netrexx_run=yes
 fi
 
-java org.netrexx.process.NetRexxC $*
+set -x
+## java org.netrexx.process.NetRexxC $*
+java org.netrexx.process.NetRexxC -cp "$CLASSPATH" -compile -sourcedir -keepasjava -replace -utf8 -format -noconsole -savelog $*
 
 if test $? -eq 0; then
   if test "$netrexx_run" = "yes"; then
