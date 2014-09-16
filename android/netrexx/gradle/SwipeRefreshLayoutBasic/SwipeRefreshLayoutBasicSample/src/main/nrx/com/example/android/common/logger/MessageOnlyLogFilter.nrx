@@ -1,0 +1,45 @@
+package com.example.android.common.logger
+
+/**
+ * Simple {@link LogNode} filter, removes everything except the message.
+ * Useful for situations like on-screen log output where you don't want a lot of metadata displayed,
+ * just easy-to-read message updates as they're happening.
+ */
+class MessageOnlyLogFilter public  implements LogNode
+
+--    properties
+    mNext = LogNode
+
+    /**
+     * Takes the "next" LogNode as a parameter, to simplify chaining.
+     *
+     * @param next The next LogNode in the pipeline.
+     */
+    method MessageOnlyLogFilter( next=LogNode)
+        mNext = next
+
+
+    method MessageOnlyLogFilter
+
+
+    /* **nonrx**  @Override ** */
+    method println( priority=int,  tag=String,  msg=String,  tr=Throwable )
+        if mNext \== null then do
+                getNext().println(Log.NONE, null, msg, null)
+
+        end
+
+
+
+    /**
+     * Returns the next LogNode in the chain.
+     */
+    method getNext  returns LogNode
+        return mNext
+
+
+    /**
+     * Sets the LogNode data will be sent to..
+     */
+    method setNext( node=LogNode )
+        mNext = node

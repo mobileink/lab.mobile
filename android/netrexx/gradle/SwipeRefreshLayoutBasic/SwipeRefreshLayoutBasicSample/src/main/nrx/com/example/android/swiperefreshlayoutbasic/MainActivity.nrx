@@ -1,0 +1,87 @@
+package com.example.android.swiperefreshlayoutbasic
+
+import android.os.Bundle
+import android.support.v4.app.FragmentTransaction
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.ViewAnimator
+import com.example.android.common.activities.SampleActivityBase
+import com.example.android.common.logger.Log
+import com.example.android.common.logger.LogFragment
+import com.example.android.common.logger.LogWrapper
+import com.example.android.common.logger.MessageOnlyLogFilter
+
+/**
+ * A simple launcher activity containing a summary sample description, sample log and a custom
+ * {@link android.support.v4.app.Fragment} which can display a view.
+ * <p>
+ * For devices with displays with a width of 720dp or greater, the sample log is always visible,
+ * on other devices it's visibility is controlled by an item on the Action Bar.
+ */
+class MainActivity public  extends SampleActivityBase
+
+  properties public constant
+  TAG = String "MainActivity"
+
+  properties private
+  mLogShown = boolean
+
+  /* **nonrx**  @Override ** */
+  method onCreate( savedInstanceState=Bundle ) inheritable
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    transaction = FragmentTransaction
+    transaction = getSupportFragmentManager().beginTransaction()
+    fragment = SwipeRefreshLayoutBasicFragment
+    fragment = SwipeRefreshLayoutBasicFragment()
+    transaction.replace(R.id.sample_content_fragment, fragment)
+    transaction.commit()
+
+
+    /* **nonrx**  @Override ** */
+  method onCreateOptionsMenu( menu=Menu )  returns boolean
+    getMenuInflater().inflate(R.menu.main, menu)
+    return 1
+
+
+    /* **nonrx**  @Override ** */
+  method onPrepareOptionsMenu( menu=Menu )  returns boolean
+    logToggle = MenuItem
+    logToggle = menu.findItem(R.id.menu_toggle_log)
+    logToggle.setVisible(findViewById(R.id.sample_output) <= ViewAnimator)
+    if mLogShown then logToggle.setTitle( R.string.sample_hide_log )
+    else logToggle.setTitle( R.string.sample_show_log )
+    return super.onPrepareOptionsMenu(menu)
+
+
+    /* **nonrx**  @Override ** */
+  method onOptionsItemSelected( item=MenuItem )  returns boolean
+
+    select
+      when item.getItemId() = R.id.menu_toggle_log then
+        do
+          mLogShown = \mLogShown
+          output = ViewAnimator
+          output = ViewAnimator findViewById(R.id.sample_output)
+          if mLogShown then output.setDisplayedChild(1)
+	  else output.setDisplayedChild(0)
+	  supportInvalidateOptionsMenu()
+	  return 1
+        end
+      otherwise return super.onOptionsItemSelected(item)
+    end
+
+  /** Create a chain of targets that will receive log data */
+    /* **nonrx**  @Override ** */
+  method initializeLogging
+    logWrap = LogWrapper
+    logWrap = LogWrapper()
+    Log.setLogNode(logWrap)
+
+    msgFilter = MessageOnlyLogFilter
+    msgFilter = MessageOnlyLogFilter()
+    logWrap.setNext(msgFilter)
+
+    logFrag = LogFragment getSupportFragmentManager().findFragmentById(R.id.log_fragment)
+    msgFilter.setNext(logFrag.getLogView())
+    Log.i(TAG, "Ready")

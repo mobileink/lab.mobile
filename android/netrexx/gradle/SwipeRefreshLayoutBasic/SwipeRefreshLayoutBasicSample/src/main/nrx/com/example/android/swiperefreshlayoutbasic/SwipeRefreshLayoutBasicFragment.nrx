@@ -1,0 +1,146 @@
+package com.example.android.swiperefreshlayoutbasic
+
+import com.example.android.common.dummydata.Cheeses
+import com.example.android.common.logger.Log
+import android.os.AsyncTask
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListAdapter
+import android.widget.ListView
+import java.util.List
+
+/**
+ * A basic sample that shows how to use {@link android.support.v4.widget.SwipeRefreshLayout} to add
+ * the 'swipe-to-refresh' gesture to a layout. In this sample, SwipeRefreshLayout contains a
+ * scrollable {@link android.widget.ListView} as its only child.
+ *
+ * <p>To provide an accessible way to trigger the refresh, this app also provides a refresh
+ * action item.
+ *
+ * <p>In this sample app, the refresh updates the ListView with a random set of new items.
+ */
+class SwipeRefreshLayoutBasicFragment public  extends Fragment
+
+  properties shared constant
+  LOG_TAG = String SwipeRefreshLayoutBasicFragment.class.getSimpleName()
+  LIST_ITEM_COUNT = int 20
+
+  properties private
+  mSwipeRefreshLayout = SwipeRefreshLayout -- detects swipe gestures, triggers callbacks
+  mListAdapter = ArrayAdapter	-- populates mListView
+
+  properties shared static
+  mListView = ListView		-- displays content to be refreshed
+
+  /* **nonrx**  @Override ** */
+  method onCreate( savedInstanceState=Bundle )
+    super.onCreate(savedInstanceState)
+    setHasOptionsMenu(1)
+
+
+    /* **nonrx**  @Override ** */
+  method onCreateView( inflater=LayoutInflater,  container=ViewGroup,  savedInstanceState=Bundle )  returns View
+    aView = View
+    aView = inflater.inflate(R.layout.fragment_sample, container, 0)
+    mSwipeRefreshLayout = SwipeRefreshLayout aView.findViewById(R.id.swiperefresh)
+
+    -- setColorScheme deprecated
+    -- mSwipeRefreshLayout.setColorScheme(R.color.swipe_color_1, R.color.swipe_color_2, R.color.swipe_color_3, R.color.swipe_color_4)
+
+    mListView = ListView aView.findViewById(android.R.id.list)
+    return aView
+
+
+    /* **nonrx**  @Override ** */
+  method onViewCreated( aView=View,  savedInstanceState=Bundle )
+    super.onViewCreated(aView, savedInstanceState)
+    mListAdapter = ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, Cheeses.randomList(SwipeRefreshLayoutBasicFragment.LIST_ITEM_COUNT))
+    SwipeRefreshLayoutBasicFragment.mListView.setAdapter(ListAdapter mListAdapter)
+    mSwipeRefreshLayout.setOnRefreshListener(SwipeRefreshLayoutBasicFragment.myRefreshListener())
+
+    /* **nonrx**  @Override ** */
+  method onCreateOptionsMenu( menu=Menu,  inflater=MenuInflater )
+    inflater.inflate(R.menu.main_menu, menu)
+
+
+  /**
+   * Respond to the user's selection of the Refresh action item. Start the SwipeRefreshLayout
+   * progress bar, then initiate the background task that refreshes the content.
+   */
+    /* **nonrx**  @Override ** */
+  method onOptionsItemSelected( item=MenuItem )  returns boolean
+
+    select
+      when item.getItemId() = R.id.menu_refresh then
+        do
+          Log.i(LOG_TAG, "Refresh menu item selected")
+          if \mSwipeRefreshLayout.isRefreshing() then mSwipeRefreshLayout.setRefreshing(1)
+          initiateRefresh()
+          return 1
+        end
+      otherwise
+	return super.onOptionsItemSelected(item)
+    end
+
+  /**
+   * By abstracting the refresh process to a single method, the app allows both the
+   * SwipeGestureLayout onRefresh() method and the Refresh action item to refresh the content.
+   */
+  method initiateRefresh -- private
+    Log.i(LOG_TAG, "initiateRefresh")
+    d = DummyBackgroundTask
+    d = DummyBackgroundTask()
+    d.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+
+
+  /**
+   * When the AsyncTask finishes, it calls onRefreshComplete(), which updates the data in the
+   * ListAdapter and turns off the progress bar.
+   */
+  method onRefreshComplete( result=List /* **nonrx**  <String> ** */ ) -- private
+    Log.i(LOG_TAG, "onRefreshComplete")
+    mListAdapter.clear()
+    loop cheese over result
+      mListAdapter.add(cheese)
+      end
+    mSwipeRefreshLayout.setRefreshing(0)
+
+
+class SwipeRefreshLayoutBasicFragment.myRefreshListener dependent extends SwipeRefreshLayoutBasicFragment implements SwipeRefreshLayout.OnRefreshListener
+    /* **nonrx**  @Override ** */
+    method onRefresh
+      Log.i(parent.LOG_TAG, "onRefresh called from SwipeRefreshLayout")
+      initiateRefresh()
+/**
+ * Dummy {@link AsyncTask} which simulates a long running task to fetch new cheeses.
+ */
+class SwipeRefreshLayoutBasicFragment.DummyBackgroundTask dependent adapter extends AsyncTask /* **nonrx**  <Void, Void, List /* **nonrx**  <String> ** */> ** */
+
+    --properties constant
+    TASK_DURATION = int 3 * 1000
+
+    /* **nonrx**  @Override ** */
+  method doInBackground(/* **nonrx**  ... ** */ params=Void ) shared  returns List
+    Log.i(parent.LOG_TAG, "doInBackground called from DummyBackgroundTask")
+    do
+      Thread.sleep(TASK_DURATION)
+    catch  e=InterruptedException
+      e.printStackTrace()
+    end
+    return Cheeses.randomList(parent.LIST_ITEM_COUNT)
+
+
+    /* **nonrx**  @Override ** */
+  method onPostExecute( result=List /* **nonrx**  <String> ** */ ) shared
+    Log.i(parent.LOG_TAG, "onPostExecute called from DummyBackgroundTask")
+    super.onPostExecute(result)
+    parent.onRefreshComplete(result)

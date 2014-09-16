@@ -1,0 +1,6 @@
+/* settings.gradle required for multiproject hierarchy */
+
+println 'This is executed during the initialization phase.'
+
+/* define an included project: */
+include 'SwipeRefreshLayoutBasicSample'
