@@ -45,8 +45,8 @@ android {
     //     androidTest.java.srcDirs = ['tests/src']
 
     // }
-sourceSets {
-    main.java.srcDirs = ['src/main/java',  'src/main/nrx']
+    sourceSets {
+        main.java.srcDirs = ['src/main/java',  'src/main/nrx']
     }
 
 }
