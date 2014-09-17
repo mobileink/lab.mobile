@@ -116,6 +116,8 @@ compiler can figure it out since it is in a nested class.  In netrexx
 we do not have nested classes, so such refs have to be explicitly
 qualified, e.g. `SpinnerActivity.this.findViewById`.
 
+Generics:  ... todo ...
+
 Example: in the spinner example we have
 
 ```java
