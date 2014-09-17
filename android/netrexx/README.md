@@ -95,6 +95,7 @@ The "kitkat" example is for min sdk versions 11 and over.
 
 # Converting Android Java to NetRexx
 
+Use `java2nrx` from [Tools](http://www.netrexx.org/tools.nsp).  It's not perfect but it saves lots of time.
 
 Casting:  no parens.  So instead of `foo = (Bar) baz(...)` do `foo = Bar baz(...)`
 
