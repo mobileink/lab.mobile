@@ -101,21 +101,21 @@ Example: in the spinner example we have
 protected ArrayAdapter<CharSequence> mAdapter;
 ...
 Spinner spinner = (Spinner) findViewById(R.id.Spinner01);
-	...
-	spinner.setAdapter(this.mAdapter);
+...
+spinner.setAdapter(this.mAdapter);
 ```
 
 In netrexx:
 
-```
-    import android.widget.SpinnerAdapter
-	...
-    properties inheritable
-	mAdapter = ArrayAdapter	-- <CharSequence>
-	...
-	theSpinner = Spinner
-	...
-	theSpinner.setAdapter(SpinnerAdapter this.mAdapter)
+```netrexx
+import android.widget.SpinnerAdapter
+...
+properties inheritable
+mAdapter = ArrayAdapter	-- <CharSequence>
+...
+theSpinner = Spinner
+...
+theSpinner.setAdapter(SpinnerAdapter this.mAdapter)
 ```
 
 We use `theSpinner` instead of `spinner` to avoid a warning and to
