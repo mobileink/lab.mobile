@@ -1,0 +1,206 @@
+package com.android.example.spinner
+
+-- import com.example.android.common.logger.Log
+
+import com.android.example.spinner.R
+import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
+import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.SpinnerAdapter
+import android.widget.TextView
+import android.widget.Toast
+import android.widget.AdapterView.OnItemSelectedListener
+
+/**
+ * Displays an Android spinner widget backed by data in an array. The
+ * array is loaded from the strings.xml resources file.
+ */
+class SpinnerActivity public  extends Activity
+
+  properties inheritable
+  mPos = int			-- current position
+  mSelection = String
+  mAdapter = ArrayAdapter	-- <CharSequence>
+
+  properties public constant
+  -- LOG_TAG = String "SpinnerActivity"
+  DEFAULT_POSITION = int 2
+  PREFERENCES_FILE = String "SpinnerPrefs"
+  PROPERTY_DELIMITER = String "="
+  POSITION_KEY = String "Position"
+  SELECTION_KEY = String "Selection"
+  POSITION_MARKER = String POSITION_KEY || PROPERTY_DELIMITER
+  SELECTION_MARKER = String SELECTION_KEY || PROPERTY_DELIMITER
+
+  /**
+   * Initializes the application and the activity.
+   * 1) Sets the view
+   * 2) Reads the spinner's backing data from the string resources file
+   * 3) Instantiates a callback listener for handling selection from the
+   *    spinner
+   * Notice that this method includes code that can be uncommented to force
+   * tests to fail.
+   *
+   * This method overrides the default onCreate() method for an Activity.
+   *
+   * @see android.app.Activity#onCreate(android.os.Bundle)
+   */
+  /* **nonrx**  @Override ** */
+  method onCreate( savedInstanceState=Bundle )
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.main)
+    -- theSpinner = Spinner	-- type decl
+    theSpinner = Spinner findViewById(R.id.Spinner01)
+    this.mAdapter = ArrayAdapter.createFromResource(this, R.array.Planets, android.R.layout.simple_spinner_dropdown_item)
+    theSpinner.setAdapter(SpinnerAdapter this.mAdapter)
+
+    theSpinnerListener = AdapterView.OnItemSelectedListener -- type decl
+    theSpinnerListener = myOnItemSelectedListener(this, this.mAdapter)
+    theSpinner.setOnItemSelectedListener(theSpinnerListener)
+
+  /**
+   * Restores the current state of the spinner (which item is selected, and the value
+   * of that item).
+   * Since onResume() is always called when an Activity is starting, even if it is re-displaying
+   * after being hidden, it is the best place to restore state.
+   *
+   * Attempts to read the state from a preferences file. If this read fails,
+   * assume it was just installed, so do an initialization. Regardless, change the
+   * state of the spinner to be the previous position.
+   *
+   * @see android.app.Activity#onResume()
+   */
+    /* **nonrx**  @Override ** */
+  method onResume
+    super.onResume()
+    if \readInstanceState(this) then do
+      setInitialState()
+    end
+
+    -- restoreSpinner = Spinner	-- type decl
+    restoreSpinner = Spinner findViewById(R.id.Spinner01)
+    restoreSpinner.setSelection(getSpinnerPosition())
+
+
+  /**
+   * Store the current state of the spinner (which item is selected, and the value of that item).
+   * Since onPause() is always called when an Activity is about to be hidden, even if it is about
+   * to be destroyed, it is the best place to save state.
+   *
+   * Attempt to write the state to the preferences file. If this fails, notify the user.
+   *
+   * @see android.app.Activity#onPause()
+   */
+    /* **nonrx**  @Override ** */
+  method onPause
+    super.onPause()
+    if \writeInstanceState(this) then do
+      Toast.makeText(this, "Failed to write state!", Toast.LENGTH_LONG).show()
+
+    end
+
+  /**
+   * Sets the initial state of the spinner when the application is first run.
+   */
+  method setInitialState
+    this.mPos = DEFAULT_POSITION
+
+  /**
+   * Read the previous state of the spinner from the preferences file
+   * @param c - The Activity's Context
+   */
+  method readInstanceState( c=Context )  returns boolean
+    p = SharedPreferences
+
+    -- DEPRECATED:  MODE_WORLD_READABLE (as of API 17)
+    -- but we leave it in the example
+    p = c.getSharedPreferences(PREFERENCES_FILE, Context.MODE_WORLD_READABLE)
+    this.mPos = p.getInt(POSITION_KEY, SpinnerActivity.DEFAULT_POSITION)
+    this.mSelection = p.getString(SELECTION_KEY, "")
+    return (p.contains(POSITION_KEY))
+
+  /**
+   * Write the application's current state to a properties repository.
+   * @param c - The Activity's Context
+   *
+   */
+  method writeInstanceState( c=Context )  returns boolean
+    p = SharedPreferences
+    p = c.getSharedPreferences(SpinnerActivity.PREFERENCES_FILE, Context.MODE_WORLD_READABLE)
+    e = SharedPreferences.Editor
+    e = p.edit()
+    e.putInt(POSITION_KEY, this.mPos)
+    e.putString(SELECTION_KEY, this.mSelection)
+    return (e.commit())
+
+  method getSpinnerPosition  returns int
+    return this.mPos
+
+  method setSpinnerPosition( pos=int )
+    this.mPos = pos
+
+  method getSpinnerSelection  returns String
+    return this.mSelection
+
+  method setSpinnerSelection( selection=String )
+    this.mSelection = selection
+
+/**
+ *  A callback listener that implements the
+ *  {@link android.widget.AdapterView.OnItemSelectedListener} interface
+ *  For views based on adapters, this interface defines the methods available
+ *  when the user selects an item from the View.
+ *
+ */
+class SpinnerActivity.myOnItemSelectedListener dependent public implements AdapterView.OnItemSelectedListener
+-- OnItemSelectedListener
+
+    -- properties
+    mLocalAdapter = ArrayAdapter /* **nonrx**  <CharSequence> ** */
+    mLocalContext = Activity
+
+  /**
+   *  Constructor
+   *  @param c - The activity that displays the Spinner.
+   *  @param ad - The Adapter view that
+   *    controls the Spinner.
+   *  Instantiate a new listener object.
+   */
+  method myOnItemSelectedListener( c=Activity,  ad=ArrayAdapter /* **nonrx**  <CharSequence> ** */)
+    this.mLocalContext = c
+    this.mLocalAdapter = ad
+
+
+  /**
+   * When the user selects an item in the spinner, this method is invoked by the callback
+   * chain. Android calls the item selected listener for the spinner, which invokes the
+   * onItemSelected method.
+   *
+   * @see android.widget.AdapterView.OnItemSelectedListener#onItemSelected(
+   *  android.widget.AdapterView, android.view.View, int, long)
+   * @param parent - the AdapterView for this listener
+   * @param v - the View for this listener
+   * @param pos - the 0-based position of the selection in the mLocalAdapter
+   * @param row - the 0-based row number of the selection in the View
+   */
+  method onItemSelected( parent=AdapterView /* **nonrx**  <?> ** */,  v=View,  pos=int,  row=long )
+    SpinnerActivity.this.mPos = pos
+    SpinnerActivity.this.mSelection = parent.getItemAtPosition(pos).toString()
+    -- Log.i(LOG_TAG, "mpos" pos)
+    -- resultText = TextView	-- type decl
+    resultText = TextView SpinnerActivity.this.findViewById(R.id.SpinnerResult)
+    resultText.setText(SpinnerActivity.this.mSelection)
+
+
+  /**
+   * The definition of OnItemSelectedListener requires an override
+   * of onNothingSelected(), even though this implementation does not use it.
+   * @param parent - The View for this Listener
+   */
+  method onNothingSelected( parent=AdapterView /* **nonrx**  <?> ** */ )
