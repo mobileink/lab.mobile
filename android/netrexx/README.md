@@ -95,6 +95,27 @@ The "kitkat" example is for min sdk versions 11 and over.
 
 # Converting Android Java to NetRexx
 
+
+Casting:  no parens.  So instead of `foo = (Bar) baz(...)` do `foo = Bar baz(...)`
+
+Class constants: must be prefixed by classname, e.g. Context.MODE_WORLD_READABLE
+
+Nested classes: not supported natively; instead use "minor" and
+"dependent" classes.  When something in the containing class is
+refered to it must be prefixed by "parent." or the classname.
+
+Nested classes from java libs must be explicitly imported to be used.
+
+Anonymous classes:  not supported.  Use minor/dependent classes instead.
+
+Qualified names: netrexx is a little more finicky than Java.  This is
+usually a good thing IMHO.  For example, in the Spinner example, in a
+nested class in the original java, we make a call to `findViewById`, a
+method of the `Activity` class.  The ref is unqualified, but the
+compiler can figure it out since it is in a nested class.  In netrexx
+we do not have nested classes, so such refs have to be explicitly
+qualified, e.g. `SpinnerActivity.this.findViewById`.
+
 Example: in the spinner example we have
 
 ```java
@@ -113,7 +134,8 @@ import android.widget.SpinnerAdapter
 properties inheritable
 mAdapter = ArrayAdapter	-- <CharSequence>
 ...
-theSpinner = Spinner
+theSpinner = Spinner -- type declaration
+theSpinner = Spinner findViewById(R.id.Spinner01)  -- cast
 ...
 theSpinner.setAdapter(SpinnerAdapter this.mAdapter)
 ```
@@ -125,8 +147,8 @@ object name ('spinner').
 We explicitly cast the arg to setAdapter, so we have to import SpinnerAdapter.  Otherwise NetRexxC will complain:
 
 ```
-    +++ theSpinner.setAdapter(this.mAdapter)
-	+++            ^^^^^^^^^^
-	+++ Error: More than one method matches the name and signature 'android.widget.Spinner.setAdapter(android.widget.ArrayAdapter)'
++++ theSpinner.setAdapter(this.mAdapter)
++++            ^^^^^^^^^^
++++ Error: More than one method matches the name and signature 'android.widget.Spinner.setAdapter(android.widget.ArrayAdapter)'
 ```
 
