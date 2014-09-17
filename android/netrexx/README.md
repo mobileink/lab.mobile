@@ -93,3 +93,40 @@ in min SDK versions from 7 to 10.
 
 The "kitkat" example is for min sdk versions 11 and over.
 
+# Converting Android Java to NetRexx
+
+Example: in the spinner example we have
+
+```java
+protected ArrayAdapter<CharSequence> mAdapter;
+...
+Spinner spinner = (Spinner) findViewById(R.id.Spinner01);
+	...
+	spinner.setAdapter(this.mAdapter);
+```
+
+In netrexx:
+
+```
+    import android.widget.SpinnerAdapter
+	...
+    properties inheritable
+	mAdapter = ArrayAdapter	-- <CharSequence>
+	...
+	theSpinner = Spinner
+	...
+	theSpinner.setAdapter(SpinnerAdapter this.mAdapter)
+```
+
+We use `theSpinner` instead of `spinner` to avoid a warning and to
+make sure there is no confusion between classname ('Spinner') and
+object name ('spinner').
+
+We explicitly cast the arg to setAdapter, so we have to import SpinnerAdapter.  Otherwise NetRexxC will complain:
+
+```
+    +++ theSpinner.setAdapter(this.mAdapter)
+	+++            ^^^^^^^^^^
+	+++ Error: More than one method matches the name and signature 'android.widget.Spinner.setAdapter(android.widget.ArrayAdapter)'
+```
+
