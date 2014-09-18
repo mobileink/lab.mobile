@@ -45,4 +45,11 @@
         android:layout_width="fill_parent">
     </TextView>
 
+    <fragment
+            android:name="com.example.android.common.logger.LogFragment"
+            android:id="@+id/log_fragment"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
 </LinearLayout>

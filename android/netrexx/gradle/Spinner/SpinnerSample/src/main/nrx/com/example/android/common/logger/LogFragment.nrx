@@ -1,0 +1,95 @@
+/*
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.example.android.common.logger
+
+import android.content.Context
+import android.graphics.Typeface
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
+import android.widget.ScrollView
+
+/**
+ * Simple fragment which contains a LogView and uses is to output log data it receives
+ * through the LogNode interface.
+ */
+class LogFragment public  extends Fragment
+
+  properties shared
+  mLogView = LogView
+  mScrollView = ScrollView
+
+  method LogFragment
+
+  method inflateViews returns View
+    mScrollView = ScrollView(getActivity())
+    scrollParams = ViewGroup.LayoutParams
+    scrollParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    mScrollView.setLayoutParams(scrollParams)
+    mActivity = Context getActivity()
+    mLogView = LogView(mActivity)
+    logParams = ViewGroup.LayoutParams
+    logParams = ViewGroup.LayoutParams(scrollParams)
+    logParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+    mLogView.setLayoutParams(logParams)
+    mLogView.setClickable(1)
+    mLogView.setFocusable(1)
+    mLogView.setTypeface(Typeface.MONOSPACE)
+    paddingDips = int
+    paddingDips = 16
+    scale = double
+    scale = getResources().getDisplayMetrics().density
+    paddingPixels = int
+    pp = (paddingDips * (scale)) + 0.5
+    paddingPixels = pp.trunc()
+    mLogView.setPadding(paddingPixels, paddingPixels, paddingPixels, paddingPixels)
+    mLogView.setCompoundDrawablePadding(paddingPixels)
+    mLogView.setGravity(Gravity.BOTTOM)
+    mLogView.setTextAppearance(getActivity(), android.R.style.TextAppearance_Holo_Medium)
+    mScrollView.addView(mLogView)
+    return mScrollView
+
+
+    /* **nonrx**  @Override ** */
+  method onCreateView( inflater=LayoutInflater,  container=ViewGroup,  savedInstanceState=Bundle )  returns View
+    result = View
+    result = inflateViews()
+    mLogView.addTextChangedListener( LogFragment.myTextWatcher() )
+    return result
+
+
+  method getLogView  returns LogView
+    return mLogView
+
+    -- in NetRexx we do not have anonymous functions (lambdas) so we use a "minor" class instead
+class LogFragment.myTextWatcher dependent implements TextWatcher
+  /* **nonrx**  @Override ** */
+  method beforeTextChanged( s=CharSequence,  start=int,  count=int,  after=int )
+
+
+    /* **nonrx**  @Override ** */
+  method onTextChanged( s=CharSequence,  start=int,  before=int,  count=int )
+
+
+    /* **nonrx**  @Override ** */
+  method afterTextChanged( s=Editable )
+    parent.mScrollView.fullScroll(int ScrollView.FOCUS_DOWN)

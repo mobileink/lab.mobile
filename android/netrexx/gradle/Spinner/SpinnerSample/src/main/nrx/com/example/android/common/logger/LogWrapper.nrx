@@ -1,0 +1,57 @@
+package com.example.android.common.logger
+
+import android.util.Log
+
+/**
+ * Helper class which wraps Android's native Log utility in the Logger interface.  This way
+ * normal DDMS output can be one of the many targets receiving and outputting logs simultaneously.
+ */
+class LogWrapper public  implements LogNode 
+
+    properties private 
+    mNext = LogNode 
+
+    /**
+     * Returns the next LogNode in the linked list.
+     */
+    method getNext  returns LogNode
+        return mNext
+
+
+    /**
+     * Sets the LogNode data will be sent to..
+     */
+    method setNext( node=LogNode ) 
+        mNext = node
+
+
+    /**
+     * Prints data out to the console using Android's native log mechanism.
+     * @param priority Log level of the data being logged.  Verbose, Error, etc.
+     * @param tag Tag for for the log data.  Can be used to organize log statements.
+     * @param msg The actual message to be logged. The actual message to be logged.
+     * @param tr If an exception was thrown, this can be sent along for the logging facilities
+     *           to extract and print useful information.
+     */
+    /* **nonrx**  @Override ** */
+    method println( priority=int,  tag=String,  msg=String,  tr=Throwable ) 
+        useMsg = String
+        useMsg = msg
+        if useMsg == null then do 
+                useMsg = ""
+
+        end
+
+        if tr \== null then do 
+                msg = msg+ "\n" || Log.getStackTraceString(tr)
+
+        end
+
+        Log.println(priority, tag, useMsg)
+        if mNext \== null then do 
+                mNext.println(priority, tag, msg, tr)
+
+        end
+
+
+

@@ -23,7 +23,7 @@
     control over.
  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.android.example.spinner"
+      package="com.example.android.spinner"
       android:versionCode="1"
       android:versionName="1.0">
 

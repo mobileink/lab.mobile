@@ -1,9 +1,15 @@
-package com.android.example.spinner
+package com.example.android.spinner
 
 -- import com.example.android.common.logger.Log
 
-import com.android.example.spinner.R
+import com.example.android.spinner.R
+import com.example.android.common.logger.Log
+import com.example.android.common.logger.LogFragment
+import com.example.android.common.logger.LogWrapper
+import com.example.android.common.logger.MessageOnlyLogFilter
+
 import android.app.Activity
+import android.support.v4.app.FragmentActivity
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
@@ -21,7 +27,7 @@ import android.widget.AdapterView.OnItemSelectedListener
  * Displays an Android spinner widget backed by data in an array. The
  * array is loaded from the strings.xml resources file.
  */
-class SpinnerActivity public  extends Activity
+class SpinnerActivity public extends FragmentActivity
 
   properties inheritable
   mPos = int			-- current position
@@ -29,7 +35,7 @@ class SpinnerActivity public  extends Activity
   mAdapter = ArrayAdapter	-- <CharSequence>
 
   properties public constant
-  -- LOG_TAG = String "SpinnerActivity"
+  LOG_TAG = String "SpinnerActivity"
   DEFAULT_POSITION = int 2
   PREFERENCES_FILE = String "SpinnerPrefs"
   PROPERTY_DELIMITER = String "="
@@ -54,6 +60,13 @@ class SpinnerActivity public  extends Activity
   /* **nonrx**  @Override ** */
   method onCreate( savedInstanceState=Bundle )
     super.onCreate(savedInstanceState)
+
+    initializeLogging()
+    Log.i(LOG_TAG, "VERBOSE: onCreate")
+    Log.d(LOG_TAG, "DEBUG: onCreate")
+    Log.i(LOG_TAG, "INFO: onCreate")
+    Log.w(LOG_TAG, "WARN: onCreate")
+    Log.e(LOG_TAG, "ERROR: onCreate")
     setContentView(R.layout.main)
     -- theSpinner = Spinner	-- type decl
     theSpinner = Spinner findViewById(R.id.Spinner01)
@@ -151,6 +164,21 @@ class SpinnerActivity public  extends Activity
   method setSpinnerSelection( selection=String )
     this.mSelection = selection
 
+  /** Create a chain of targets that will receive log data */
+    /* **nonrx**  @Override ** */
+  method initializeLogging
+    logWrap = LogWrapper
+    logWrap = LogWrapper()
+    Log.setLogNode(logWrap)
+
+    msgFilter = MessageOnlyLogFilter
+    msgFilter = MessageOnlyLogFilter()
+    logWrap.setNext(msgFilter)
+
+    logFrag = LogFragment getSupportFragmentManager().findFragmentById(R.id.log_fragment)
+    -- msgFilter.setNext(logFrag.getLogView())
+    Log.i(LOG_TAG, "Ready")
+
 /**
  *  A callback listener that implements the
  *  {@link android.widget.AdapterView.OnItemSelectedListener} interface
@@ -192,7 +220,7 @@ class SpinnerActivity.myOnItemSelectedListener dependent public implements Adapt
   method onItemSelected( parent=AdapterView /* **nonrx**  <?> ** */,  v=View,  pos=int,  row=long )
     SpinnerActivity.this.mPos = pos
     SpinnerActivity.this.mSelection = parent.getItemAtPosition(pos).toString()
-    -- Log.i(LOG_TAG, "mpos" pos)
+    Log.i(SpinnerActivity.LOG_TAG, "onItemSelected: mpos" pos)
     -- resultText = TextView	-- type decl
     resultText = TextView SpinnerActivity.this.findViewById(R.id.SpinnerResult)
     resultText.setText(SpinnerActivity.this.mSelection)
