@@ -1,6 +1,8 @@
 NetRexx Android Development
 ==========
 
+*Caveat: this documentation is incomplete and out of sync with the code.  I'll get around to fixing it up one of these days...*
+
 Examples of using [netrexx](http://www.netrexx.org/) to develop
 android apps.
 
@@ -106,6 +108,8 @@ Nested classes: not supported natively; instead use "minor" and
 refered to it must be prefixed by "parent." or the classname.
 
 Nested classes from java libs must be explicitly imported to be used.
+
+Nested classes may not contain constant (static) vars; you have to put them in an enclosing, non-minor/dependent (ie. not nested) class
 
 Anonymous classes:  not supported.  Use minor/dependent classes instead.
 
