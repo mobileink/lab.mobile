@@ -30,7 +30,7 @@ import android.widget.Toast
  * This example illustrates a common usage of the DrawerLayout widget
  * in the Android support library.
  * <p/>
- * <p>When a navigation (left) drawer is present, the host activity should detect presses of
+ * <p>When a navigation (start-side) drawer is present, the host activity should detect presses of
  * the action bar's Up affordance as a signal to open and close the navigation drawer. The
  * ActionBarDrawerToggle facilitates this behavior.
  * Items within the drawer should fall into one of two categories:</p>
@@ -75,64 +75,63 @@ class MainActivity public  extends Activity
     mTitle = mDrawerTitle
     mPlanetTitles = getResources().getStringArray(R.array.planets_array)
     mDrawerLayout = DrawerLayout findViewById(R.id.drawer_layout)
-    mDrawerList = ListView findViewById(R.id.left_drawer)
+    mDrawerList = ListView findViewById(R.id.start_drawer)
     mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
     mDrawerList.setAdapter(ListAdapter ArrayAdapter(this, R.layout.drawer_list_item, mPlanetTitles))
     mDrawerList.setOnItemClickListener(DrawerItemClickListener())
+    -- enable ActionBar app icon to behave as action to toggle nav drawer
     getActionBar().setDisplayHomeAsUpEnabled(1)
     getActionBar().setHomeButtonEnabled(1)
+
     mDrawerToggle = MainActivity.myActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close)
     mDrawerLayout.setDrawerListener(mDrawerToggle)
-    if savedInstanceState == null then do
-      selectItem(0)
+    if savedInstanceState == null
+      then selectItem(0)
 
-    end
-
-
-
-    /* **nonrx**  @Override ** */
-  method onCreateOptionsMenu( menu=Menu )  returns boolean
+  method onCreateOptionsMenu( menu=Menu )  returns boolean -- @Override nonrx
     inflater = MenuInflater
     inflater = getMenuInflater()
     inflater.inflate(R.menu.main, menu)
     return super.onCreateOptionsMenu(menu)
 
-
-    /* **nonrx**  @Override ** */
-  method onPrepareOptionsMenu( menu=Menu )  returns boolean
+  method onPrepareOptionsMenu( menu=Menu )  returns boolean -- @Override nonrx
     drawerOpen = boolean
     drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList)
     menu.findItem(R.id.action_websearch).setVisible(\drawerOpen)
     return super.onPrepareOptionsMenu(menu)
 
-
-    /* **nonrx**  @Override ** */
-  method onOptionsItemSelected( item=MenuItem )  returns boolean
-    if mDrawerToggle.onOptionsItemSelected(item) then do
-      return 1
-
-    end
-
-
-    select
+  method onOptionsItemSelected( item=MenuItem )  returns boolean  -- **nonrx**  @Override **
+    -- The action bar home/up action should open or close the drawer.
+    -- ActionBarDrawerToggle will take care of this.
+    if mDrawerToggle.onOptionsItemSelected(item)
+      then return 1
+    select			-- Handle action buttons
       when item.getItemId() = R.id.action_websearch then
         do
-          theIntent = Intent
-          theIntent = Intent(Intent.ACTION_WEB_SEARCH)
+          theIntent = Intent Intent(Intent.ACTION_WEB_SEARCH)
           theIntent.putExtra(SearchManager.QUERY, getActionBar().getTitle())
-          if theIntent.resolveActivity(getPackageManager()) \== null then do
-            startActivity(theIntent)
-
-          end
-    else do
-      Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show()
-    end
-
-    return 1
-        end
+          if theIntent.resolveActivity(getPackageManager()) == null
+	    then Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show()
+	  else startActivity(theIntent)
+	  return 1
+	end
       otherwise
         return super.onOptionsItemSelected(item)
     end
+
+  method setTitle( title=CharSequence ) -- @Override nonrx
+    mTitle = title
+    getActionBar().setTitle(mTitle)
+
+    -- the ActionBarDrawerToggle is to be called in onPostCreate() and onConfigurationChanged()...
+  method onPostCreate( savedInstanceState=Bundle ) inheritable -- @Override nonrx
+    super.onPostCreate(savedInstanceState)
+    -- Sync the toggle state after onRestoreInstanceState has occurred.
+    mDrawerToggle.syncState()
+
+  method onConfigurationChanged( newConfig=Configuration ) -- @Override nonrx
+    super.onConfigurationChanged(newConfig)
+    mDrawerToggle.onConfigurationChanged(newConfig) -- required
 
   method selectItem( position=int ) inheritable
     theFragment = PlanetFragment()
@@ -145,45 +144,49 @@ class MainActivity public  extends Activity
     setTitle(mPlanetTitles[position])
     mDrawerLayout.closeDrawer(mDrawerList)
 
-
-    /* **nonrx**  @Override ** */
-  method setTitle( title=CharSequence )
-    mTitle = title
-    getActionBar().setTitle(mTitle)
-
-
-  /**
-   * When using the ActionBarDrawerToggle, you must call it during
-   * onPostCreate() and onConfigurationChanged()...
-   */
-    /* **nonrx**  @Override ** */
-  method onPostCreate( savedInstanceState=Bundle ) inheritable
-    super.onPostCreate(savedInstanceState)
-    mDrawerToggle.syncState()
-
-
-    /* **nonrx**  @Override ** */
-  method onConfigurationChanged( newConfig=Configuration )
-    super.onConfigurationChanged(newConfig)
-    mDrawerToggle.onConfigurationChanged(newConfig)
-
+/** Minor/Dependent (nested/anonymous) classes **/
 
 class MainActivity.myActionBarDrawerToggle dependent extends ActionBarDrawerToggle
-
+  /*
+     To use ActionBarDrawerToggle, create one in your Activity and call through to the following methods corresponding to your Activity callbacks:
+     onConfigurationChanged
+     onOptionsItemSelected
+     Call syncState() from your Activity's onPostCreate to synchronize the indicator with the state of the linked DrawerLayout after onRestoreInstanceState has occurred.
+   */
   method myActionBarDrawerToggle(theActivity=Activity, theDrawerLayout=DrawerLayout, theDrawerImageRes=int, theOpenDrawerContentDescRes = int, theCloseDrawerContentDescRes = int)
     super(theActivity, theDrawerLayout, theDrawerImageRes, theOpenDrawerContentDescRes, theCloseDrawerContentDescRes)
 
+  -- method isDrawerIndicatorEnabled returns Boolean
+
+  -- method onConfigurationChanged( newConfig=Configuration )
+  --   super.onConfigurationChanged( newConfig )
+
   method onDrawerClosed( view=View )
+    -- inherited DrawerLayout.DrawerListener callback method.
     parent.getActionBar().setTitle(parent.mTitle)
     parent.invalidateOptionsMenu()
 
-
   method onDrawerOpened( drawerView=View )
+    -- inherited DrawerLayout.DrawerListener callback method.
     parent.getActionBar().setTitle(parent.mDrawerTitle)
     parent.invalidateOptionsMenu()
 
+  -- method onDrawerSlide(drawerView=View, slideOffset=float)
+    -- inherited DrawerLayout.DrawerListener callback method.
 
-  class MainActivity.DrawerItemClickListener dependent implements AdapterView.OnItemClickListener
+  -- method onDrawerStateChanged(newState=int)
+    -- inherited DrawerLayout.DrawerListener callback method.
+
+  -- method onOptionsItemSelected(MenuItem item) returns boolean
+    -- This method should be called by your Activity's onOptionsItemSelected method.
+
+  -- method setDrawerIndicatorEnabled(boolean enable)
+    -- Enable or disable the drawer indicator.
+
+  -- method syncState()
+    -- Synchronize the state of the drawer indicator/affordance with the linked DrawerLayout.
+
+class MainActivity.DrawerItemClickListener dependent implements AdapterView.OnItemClickListener
 
     /* **nonrx**  @Override ** */
   method onItemClick( parent=AdapterView, view=View,  position=int,  id=long )
